@@ -57,6 +57,13 @@
 
           <p>We leverage these insights to present Xpander, a novel datacenter architecture that achieves near-optimal performance and provides a tangible alternative to existing datacenter designs. Xpander's design turns ideas from the rich graph-theoretic literature on constructing optimal expanders into an operational reality. We evaluate Xpander via theoretical analyses, extensive simulations, experiments with a network emulator, and an implementation on an SDN-capable network testbed. Our results demonstrate that Xpander significantly outperforms both traditional and proposed datacenter designs. We discuss challenges to real-world deployment and explain how these can be resolved.</p>
 
+          <p>
+            We present a selected set of results below. For the complete set
+            and comparisons to other previling architectures (e.g, a recent
+            HPC architecture named <a href="https://htor.inf.ethz.ch/publications/img/sf_sc_2014.pdf">SlimFly</a>)
+            in our full <a href="#additional">Technical Report</a>.
+          </p>
+
           <p><b>Read more...</b></p>
 
           <p>
@@ -154,6 +161,10 @@
             </div>
           </p>
 
+          <p>
+            Additional results can be found in our full <a href="#additional">Technical Report</a> at Section §4.
+          </p>
+
           <h1 class="section-heading" id="traditional">Xpander vs. Traditional Datacenters</h1>
             <p>
               Traditional datacenter architecture is deployed using a multi-rooted tree architecture,
@@ -171,7 +182,7 @@
               It is important to note that the number of switches <b>and</b> servers in a FatTree network
               is singly determined by the number of ports available in each switch (all switches are
               assumed to have the same port count).
-              <div class="thumbnail">
+              <div class="thumbnail" id="table-2">
                 <table class="table text-center">
                   <thead>
                     <tr class="active">
@@ -197,20 +208,31 @@
               </div>
             </p>
 
-            <!-- <h3>Resistance To Failures</h3>
             <p>
-            </p> -->
+              Additional results can be found in our full <a href="#additional">Technical Report</a> at Section §5.
+            </p>
+
+            <h3>Resistance To Failures</h3>
+            <p>
+              <div class="row">
+                <div class="col-md-6">
+                  We compute the all-to-all server-toserver throughput in FatTrees and Xpanders after failing <i>X</i>
+                  links uniformly at random, where <i>X</i> ranges 0% to 30% in increments of 3%. We repeat this
+                  experiment for the topologies in <a href="#table-2">Table 2</a>.
+                </div>
+                <div class="col-md-6 thumbnail">
+                  <img src="img/xpander_failures.jpg" alt="Xpander Failures" class="img-responsive"/>
+                  <div class="caption"> <b>Figure 4:</b> Flow level server-to-server throughput degradation with failures</div>
+                </div>
+              </div>
+            </p>
+            <p>
+              Additional results can be found in our full <a href="#additional">Technical Report</a> at Section §5.2.
+            </p>
 
             <!-- <h3>Evaluation Using Mininet</h3>
             <p>
             </p> -->
-
-
-            <p>
-              We present additional results and comparisons to other previling architectures (e.g, a recent
-              HPC architecture named <a href="https://htor.inf.ethz.ch/publications/img/sf_sc_2014.pdf">SlimFly</a>)
-              in our full <a href="#publications">Technical Report</a> below.
-            </p>
 
             <!--
             add failures
@@ -280,7 +302,10 @@
            </div>
           </p>
           <p>
-            You can find additional information in the full <a href="./files/xpander-full.pdf">Technical Report</a> below.
+            You can find additional information in the full <a href="./files/xpander-full.pdf">Technical Report</a>
+            at Section §5.4 and results for a <a href="http://mininet.org/">Mininet</a> 
+            emulation at Section §5.3.
+          </p>
 
           <h1 class="section-heading" id="additional">Publications</h1>
             <div class="post-preview">
