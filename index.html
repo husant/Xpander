@@ -53,16 +53,9 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-          <p>Despite extensive efforts to meet ever-growing demands, today's datacenters often exhibit far-from-optimal performance in terms of network utilization, resiliency to failures, cost efficiency, incremental expandability, and more. Consequently, many novel architectures for high-performance datacenters have been proposed. We show that the benefits of state-of-the-art proposals are, in fact, derived from the fact that these are (implicitly) utilizing "expander graphs" (aka expanders) as their network topologies, thus unveiling a unifying theme of these proposals. We observe, however, that these proposals are not optimal with respect to performance, do not scale, or suffer from seemingly insurmountable deployment challenges. </p>
+          <p>Despite extensive efforts to meet ever-growing demands, today's datacenters often exhibit far-from-optimal performance in terms of network utilization, resiliency to failures, cost efficiency, incremental expandability, and more. We present Xpander, a novel datacenter architecture that achieves near-optimal performance and provides a tangible alternative to existing datacenter designs. Xpander's design turns ideas from the rich graph-theoretic literature on constructing optimal expander graphs into an operational reality. We evaluate Xpander via theoretical analyses, extensive simulations, experiments with a network emulator, and an implementation on an SDN-capable network testbed. Our results demonstrate that Xpander significantly outperforms both traditional and proposed datacenter designs. We discuss challenges to real-world deployment and explain how these can be resolved. We provide below a brief exposition of our findings.</p>
 
-          <p>We leverage these insights to present Xpander, a novel datacenter architecture that achieves near-optimal performance and provides a tangible alternative to existing datacenter designs. Xpander's design turns ideas from the rich graph-theoretic literature on constructing optimal expanders into an operational reality. We evaluate Xpander via theoretical analyses, extensive simulations, experiments with a network emulator, and an implementation on an SDN-capable network testbed. Our results demonstrate that Xpander significantly outperforms both traditional and proposed datacenter designs. We discuss challenges to real-world deployment and explain how these can be resolved.</p>
-
-          <p>
-            We present a selected set of results below. For the complete set
-            and comparisons to other previling architectures (e.g, a recent
-            HPC architecture named <a href="https://htor.inf.ethz.ch/publications/img/sf_sc_2014.pdf">SlimFly</a>)
-            in our full <a href="#additional">Technical Report</a>.
-          </p>
+          <p>See our full <a href="#additional">Technical Report</a> for a detailed exposition. </p>
 
           <p><b>Read more...</b></p>
 
@@ -100,28 +93,35 @@
                   <div class="caption"> <b>Figure 2:</b> Division of Xpander into "Xpander-pods"</div>
                 </div>
                 <div class="col-md-6">
-                  An Xpander can naturally be divided into
-                  smaller Xpanders (“Xpander-pods”), each of the form depicted
-                  in Figure 1, such that each pod is simply a collection
-                  of meta-nodes. It is also worthy to note that Observe that
-                  dividing an Xpander into Xpander-pods need not be into
-                  pods of the same size.
+                  An Xpander can naturally be divided into smaller Xpanders (“Xpander-pods”), each of the form described in Figure 2. Xpander-pods need not be of the same size.
               </div>
             </div>
           </p>
 
+
           <p>
-            In Xpander we use <a href="http://www.multipath-tcp.org/"> MPTCP</a> as our congestion mechanism and
-            <a href="https://www.jstor.org/stable/2629312?seq=1#page_scan_tab_contents">K-Shortest Paths</a>
-            as our routing mechanisms. Combining these two allow Xpander to achieve a near optimal
-            all-to-all throughput (comparing to an unattainable upper bound).
+            Xpander utilizes <a href="https://www.jstor.org/stable/2629312?seq=1#page_scan_tab_contents">K-Shortest Paths</a> as the routing protocol and
+            <a href="http://www.multipath-tcp.org/">MPTCP</a> as the congestion control protocol.
+            Combining these two protocols allows Xpander to achieve near optimal network utilization.
+            Figure 3 below describes the distance from a theoretical optimum of the all-to-all throughput
+             (described <a href="https://www.usenix.org/system/files/conference/nsdi14/nsdi14-paper-singla.pdf">here</a>)
+             of Xpander of different sizes and for different values of <i>K</i> - the number of subflows used by MPTCP and paths used in the "K-Shortest Paths" selection.
+           </p>
+           <p>
+             Our results show that Xpander achieves network throughput that is within 10% of the best possible
+             for any datacenter architecture.
+             Table 1 shows our results for "skewed" traffic scenarios, i.e.,
+             when individual traffic flows are divided into small flows ("mice")
+             and large flows ("elephants"). Observe that Xpander's network throughput was
+             within 15% of the best attainable throughput for any datacenter in over 80% of evaluated
+             scenarios and within 10% of the optimum in over 80% of evaluated scenarios.
           </p>
 
 
           <p>
             <div class="thumbnail">
               <img src="img/xpander_mptcp.png" alt="Xpander MPTCP Results" class="img-responsive"/>
-              <div class="caption"> <b>Figure 3:</b> Xpander throughput using different values of K</div>
+              <div class="caption"> <b>Figure 3:</b> Xpander throughput using different values of K - the number of subflows used by MPTCP and paths used in the "K-Shortest Paths" selection</div>
             </div>
           </p>
 
@@ -167,21 +167,31 @@
 
           <h1 class="section-heading" id="traditional">Xpander vs. Traditional Datacenters</h1>
             <p>
+              Traditional datacenters employ a multi-rooted tree network topology, referred to as
+              <a href="http://ccr.sigcomm.org/online/files/p63-alfares.pdf">Fat-Tree</a>.
+              We compare Xpander and today's datacenter designing. Our results establish that Xpander yields
+              significantly better performance.
+              Table 2 below shows a comparison between Xpander and Fat Tree for various switch port-counts.
+              As the results in Table 2 demonstrate, Xpander can support the same (or more) servers as Fat-Tree
+              and achieve higher performance with significantly less network equipment.
+            </p>
+
+            <!-- <p>
               Traditional datacenter architecture is deployed using a multi-rooted tree architecture,
               usually called as a <a href="http://ccr.sigcomm.org/online/files/p63-alfares.pdf">Fat-Tree</a>.
               We compare Xpander against such architecture over several criteria as described below.
-            </p>
+            </p> -->
 
-            <h3>Flow Level Simulations</h3>
+            <!-- <h3>Flow Level Simulations</h3> -->
             <p>
-              We simulate Xpander and Fat-Tree of different switch degrees under an all-to-all traffic pattern.
+              <!-- We simulate Xpander and Fat-Tree of different switch degrees under an all-to-all traffic pattern.
               In this type of pattern every server communicates to every other server, our goal is then
               to maximize the amount of traffic each server could send, concurrently, to any other server
               in the network.
               <br>
               It is important to note that the number of switches <b>and</b> servers in a FatTree network
               is singly determined by the number of ports available in each switch (all switches are
-              assumed to have the same port count).
+              assumed to have the same port count). -->
               <div class="thumbnail" id="table-2">
                 <table class="table text-center">
                   <thead>
@@ -230,42 +240,21 @@
               Additional results can be found in our full <a href="#additional">Technical Report</a> at Section §5.2.
             </p>
 
-            <!-- <h3>Evaluation Using Mininet</h3>
-            <p>
-            </p> -->
-
-            <!--
-            add failures
-            evaluation (mininet + sdn testbed) - table 4 and table 5
-            add sections in article -->
-
           <h1 class="section-heading" id="implementation">Implementation on an SDN Testbed</h1>
 
           <p>
-            To validate the above findings, we use the <a href="http://ocean.cs.illinois.edu/">"Ocean Cluster
-            for Experimental Architectures in Networks"</a> (OCEAN),
-            an SDN-capable network testbed composed of 13 Pica8 Pronto
-            3290 switches each with 48 ports. We used the OCEAN platform
-            to experimentally evaluate two datacenter networks:
-            <br>
-            (1) a fat tree composed of 20 4-port switches, of which 8 are
-            top-of-rack switches, each connected to 2 servers (16 servers
-            overall), and (2) an Xpander consisting of 16 4-port switches,
-            each connected to a single server (again, 16 servers overall).
+            We implemented Xpander and Fat Tree on <a href="http://ocean.cs.illinois.edu/">OCEAN</a>,
+            an SDN-capable network testbed.  The evaluated Fat Tree consists of 20 4-port switches and 16
+            servers, whereas the evaluated Xpander consists of only 16 switches supporting the same
+            number of servers (16).
           </p>
 
-
-          <h3>Results</h3>
           <p>
-            We've tested both Xpander and FatTree under 3 different traffic types:
-            <ol>
-               <li> <b>Random Shuffle</b> - Each server communicates with another different server </li>
-              <li> <b>One-to-Many</b> - A single random server communicates with all other servers</li>
-               <li> <b>Many-to-One</b> - All server communicate with the a single server (that was selected at random) </li>
-           </ol>
-         </p>
+            Table 3 presents a comparison Xpander vs. Fat Tree for three traffic patterns:
+            (1) random shuffle, (2) many-to-one, and (3) one to many.
+          </p>
+
          <p>
-           The results of these simulations are below, values are averaged over 5 different runs and displayed as Xpander/FatTree:
            <div class="thumbnail">
              <table class="table text-center">
                <thead>
@@ -297,8 +286,7 @@
                  </tr>
                </tbody>
              </table>
-             <div class="caption"> <b>Table 3:</b> Real world Xpander and FatTree networks under
-               differnet traffic patterns</div>
+             <div class="caption"> <b>Table 3:</b> Xpander vs. FatTree under different traffic patterns</div>
            </div>
           </p>
           <p>
@@ -334,28 +322,10 @@
 
           <h1 class="section-heading" id="contact">Contact Us!</h1>
               <table class="table text-center">
-                <thead>
-                  <tr class="active">
-                    <th class="text-center">Contact Name</th>
-                    <th class="text-center">Email</th>
-                  </tr>
-                </thead>
                 <tbody>
                   <tr >
                     <td>Asaf Valadarsky</td>
                     <td><a href="mailto:asaf.valadarsky@mail.huji.ac.il">asaf.valadarsky@mail.huji.ac.il</a></td>
-                  </tr>
-                  <tr>
-                    <td>Gal Shahaf</td>
-                    <td><a href="mailto:gal.shahaf@mail.huji.ac.il">gal.shahaf@mail.huji.ac.il</a></td>
-                  </tr>
-                  <tr>
-                    <td>Michael Dinitz</td>
-                    <td><a href="mailto:mdinitz@cs.jhu.edu">mdinitz@cs.jhu.edu</a></td>
-                  </tr>
-                  <tr>
-                    <td>Michael Schapira</td>
-                    <td><a href="mailto:schapiram@huji.ac.il">schapiram@huji.ac.il</a></td>
                   </tr>
                 </tbody>
               </table>
