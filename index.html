@@ -55,7 +55,7 @@
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           <p>Despite extensive efforts to meet ever-growing demands, today's datacenters often exhibit far-from-optimal performance in terms of network utilization, resiliency to failures, cost efficiency, incremental expandability, and more. We present Xpander, a novel datacenter architecture that achieves near-optimal performance and provides a tangible alternative to existing datacenter designs. Xpander's design turns ideas from the rich graph-theoretic literature on constructing optimal expander graphs into an operational reality. We evaluate Xpander via theoretical analyses, extensive simulations, experiments with a network emulator, and an implementation on an SDN-capable network testbed. Our results demonstrate that Xpander significantly outperforms both traditional and proposed datacenter designs. We discuss challenges to real-world deployment and explain how these can be resolved. We provide below a brief exposition of our findings.</p>
 
-          <p>See our full <a href="#additional">Technical Report</a> for a detailed exposition. </p>
+          <p>See our <a href="#additional">Technical Report</a> for a detailed exposition. </p>
 
           <p><b>Read more...</b></p>
 
@@ -76,7 +76,7 @@
                 An Xpander network can be regarded as composed of multiple “meta nodes”
                 such that (1) each meta-node consists of the same number of
                 ToRs (2) every two meta-nodes are connected via the same
-                number of links, and (3) no two ToRs within the same metanode
+                number of links, and (3) no two ToRs within the same meta-node
                 are directly connected.
               </div>
               <div class="col-md-6 thumbnail">
@@ -102,14 +102,14 @@
           <p>
             Xpander utilizes <a href="https://www.jstor.org/stable/2629312?seq=1#page_scan_tab_contents">K-Shortest Paths</a> as the routing protocol and
             <a href="http://www.multipath-tcp.org/">MPTCP</a> as the congestion control protocol.
-            Combining these two protocols allows Xpander to achieve near optimal network utilization.
-            Figure 3 below describes the distance from a theoretical optimum of the all-to-all throughput
-             (described <a href="https://www.usenix.org/system/files/conference/nsdi14/nsdi14-paper-singla.pdf">here</a>)
+            Combining these two protocols allows Xpander to achieve near-optimal network utilization.
+            Figure 3 below describes the distance from a theoretical optimum of the
+            <a href="https://www.usenix.org/system/files/conference/nsdi14/nsdi14-paper-singla.pdf">all-to-all throughput</a>
              of Xpander of different sizes and for different values of <i>K</i> - the number of subflows used by MPTCP and paths used in the "K-Shortest Paths" selection.
            </p>
            <p>
              Our results show that Xpander achieves network throughput that is within 10% of the best possible
-             for any datacenter architecture.
+             for <i><u>any</i></u> datacenter architecture.
              Table 1 shows our results for "skewed" traffic scenarios, i.e.,
              when individual traffic flows are divided into small flows ("mice")
              and large flows ("elephants"). Observe that Xpander's network throughput was
@@ -121,7 +121,7 @@
           <p>
             <div class="thumbnail">
               <img src="img/xpander_mptcp.png" alt="Xpander MPTCP Results" class="img-responsive"/>
-              <div class="caption"> <b>Figure 3:</b> Xpander throughput using different values of K - the number of subflows used by MPTCP and paths used in the "K-Shortest Paths" selection</div>
+              <div class="caption"> <b>Figure 3:</b> Xpander throughput for different values of K in K-Shortest-Paths</div>
             </div>
           </p>
 
@@ -162,17 +162,16 @@
           </p>
 
           <p>
-            Additional results can be found in our full <a href="#additional">Technical Report</a> at Section §4.
+            Additional results can be found in the <a href="#additional">Technical Report</a> at Section §4.
           </p>
 
           <h1 class="section-heading" id="traditional">Xpander vs. Traditional Datacenters</h1>
             <p>
               Traditional datacenters employ a multi-rooted tree network topology, referred to as
               <a href="http://ccr.sigcomm.org/online/files/p63-alfares.pdf">Fat-Tree</a>.
-              We compare Xpander and today's datacenter designing. Our results establish that Xpander yields
-              significantly better performance.
+              We compare Xpander and today's datacenter designing.
               Table 2 below shows a comparison between Xpander and Fat Tree for various switch port-counts.
-              As the results in Table 2 demonstrate, Xpander can support the same (or more) servers as Fat-Tree
+              Observe that Xpander can support the same (or more) servers as Fat-Tree
               and achieve higher performance with significantly less network equipment.
             </p>
 
@@ -214,21 +213,22 @@
                     <tr><td>24</td><td>80%</td><td>100%</td><td>111%</td></tr>
                   </tbody>
                 </table>
-                <div class="caption"> <b>Table 2:</b> Xpander vs. FatTree under all-to-all traffic pattern</div>
+                <div class="caption"> <b>Table 2:</b> Xpander vs. FatTree</div>
               </div>
             </p>
 
             <p>
-              Additional results can be found in our full <a href="#additional">Technical Report</a> at Section §5.
+              Additional results can be found in the <a href="#additional">Technical Report</a> at Section §5.
             </p>
 
-            <h3>Resistance To Failures</h3>
             <p>
               <div class="row">
                 <div class="col-md-6">
-                  We compute the all-to-all server-toserver throughput in FatTrees and Xpanders after failing <i>X</i>
-                  links uniformly at random, where <i>X</i> ranges 0% to 30% in increments of 3%. We repeat this
-                  experiment for the topologies in <a href="#table-2">Table 2</a>.
+                  Figure 4 plots network throughput (y-axis) in Fat-Tree and Xpander after failing <i>X</i> links uniformly at
+                  random, where <i>X</i> ranges 0% to 30% in increments of 3%.
+                  Observe that (1) even with no failures (x=0) Xpander achieves better performance,
+                  as guaranteed by the above results, and (2) Xpander's performance degrades much more
+                  gracefully with failures.
                 </div>
                 <div class="col-md-6 thumbnail">
                   <img src="img/xpander_failures.jpg" alt="Xpander Failures" class="img-responsive"/>
@@ -237,7 +237,7 @@
               </div>
             </p>
             <p>
-              Additional results can be found in our full <a href="#additional">Technical Report</a> at Section §5.2.
+              Additional results can be found in the <a href="#additional">Technical Report</a> at Section §5.2.
             </p>
 
           <h1 class="section-heading" id="implementation">Implementation on an SDN Testbed</h1>
@@ -291,8 +291,7 @@
           </p>
           <p>
             You can find additional information in the full <a href="./files/xpander-full.pdf">Technical Report</a>
-            at Section §5.4 and results for a <a href="http://mininet.org/">Mininet</a>
-            emulation at Section §5.3.
+            at Section §5.4.
           </p>
 
           <h1 class="section-heading" id="additional">Publications</h1>
